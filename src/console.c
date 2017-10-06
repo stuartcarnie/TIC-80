@@ -1979,8 +1979,6 @@ static void processCommand(Console* console, const char* command)
 
 	if(param && !strlen(param)) param = NULL;
 
-	bool found = false;
-
 	for(s32 i = 0; i < COUNT_OF(AvailableConsoleCommands); i++)
 		if(tic_strcasecmp(command, AvailableConsoleCommands[i].command) == 0 || 
 			(AvailableConsoleCommands[i].alt && tic_strcasecmp(command, AvailableConsoleCommands[i].alt) == 0))
@@ -1988,12 +1986,12 @@ static void processCommand(Console* console, const char* command)
 			if(AvailableConsoleCommands[i].handler)
 			{
 				AvailableConsoleCommands[i].handler(console, param);
-				found = true;
+				command = NULL;
 				break;
 			}
 		}
 
-	if(!found)
+	if(command)
 	{
 		printLine(console);
 		printError(console, "unknown command:");
